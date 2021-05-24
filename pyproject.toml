@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "gpos-compression-by-tetris"
+version = "0.1.0"
+description = ""
+authors = ["Nikolaus Waxweiler <nikolaus.waxweiler@daltonmaag.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fonttools = "^4.24.3"
+sklearn = "^0.0"
+ufo2ft = "^2.21.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^21.5b1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
