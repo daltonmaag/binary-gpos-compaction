@@ -1,4 +1,4 @@
-from gpos_compression_by_tetris import __version__
+from gpos_compaction import __version__
 
 
 def test_version():
