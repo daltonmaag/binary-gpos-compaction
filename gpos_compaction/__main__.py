@@ -51,10 +51,10 @@ def main(args: Optional[List[str]] = None):
         size_auto = len(font_auto.getTableData("GPOS")) / 1024
 
         # Bonus: measure WOFF2 file sizes.
-        size_woff_orig = woff_size(font, font_path)
-        size_woff_one = woff_size(font_one, font_one_path)
-        size_woff_auto = woff_size(font_auto, font_auto_path)
-        size_woff_max = woff_size(font_max, font_max_path)
+        size_woff_orig = woff_size(font, font_path) / 1024
+        size_woff_one = woff_size(font_one, font_one_path) / 1024
+        size_woff_auto = woff_size(font_auto, font_auto_path) / 1024
+        size_woff_max = woff_size(font_max, font_max_path) / 1024
 
         rows.append(
             (
