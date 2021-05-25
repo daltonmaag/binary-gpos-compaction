@@ -1,0 +1,1 @@
+Get-ChildItem ..\google-fonts\ofl\ -Recurse -Filter *.csv | Select-Object -ExpandProperty FullName | Import-Csv | Export-Csv combinedcsvs.csv -NoTypeInformation -Append
