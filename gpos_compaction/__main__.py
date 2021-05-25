@@ -33,7 +33,6 @@ def main(args: Optional[List[str]] = None):
         font_one.save(font_one_path)
         font_one = TTFont(font_one_path)
         size_one = len(font_one.getTableData("GPOS")) / 1024
-        del font_one
 
         font_max = TTFont(font_path)
         compact(font_max, mode="max")
@@ -41,7 +40,6 @@ def main(args: Optional[List[str]] = None):
         font_max.save(font_max_path)
         font_max = TTFont(font_max_path)
         size_max = len(font_max.getTableData("GPOS")) / 1024
-        del font_max
 
         font_auto = TTFont(font_path)
         compact(font_auto, mode="auto")
@@ -51,22 +49,41 @@ def main(args: Optional[List[str]] = None):
         font_auto.save(font_auto_path)
         font_auto = TTFont(font_auto_path)
         size_auto = len(font_auto.getTableData("GPOS")) / 1024
-        del font_auto
+
+        # Bonus: measure WOFF2 file sizes.
+        size_woff_orig = woff_size(font, font_path)
+        size_woff_one = woff_size(font_one, font_one_path)
+        size_woff_auto = woff_size(font_auto, font_auto_path)
+        size_woff_max = woff_size(font_max, font_max_path)
 
         rows.append(
             (
                 font_path.name,
                 size_orig,
+                size_woff_orig,
                 size_one,
                 pct(size_one, size_orig),
+                size_woff_one,
+                pct(size_woff_one, size_woff_orig),
                 size_auto,
                 pct(size_auto, size_orig),
+                size_woff_auto,
+                pct(size_woff_auto, size_woff_orig),
                 size_max,
                 pct(size_max, size_orig),
+                size_woff_max,
+                pct(size_woff_max, size_woff_orig),
             )
         )
 
     write_csv(rows)
+
+
+def woff_size(font: TTFont, path: Path) -> int:
+    font.flavor = "woff2"
+    woff_path = path.with_suffix(".woff2")
+    font.save(woff_path)
+    return woff_path.stat().st_size
 
 
 def write_csv(rows: List[Tuple[Any]]) -> None:
@@ -76,12 +93,19 @@ def write_csv(rows: List[Tuple[Any]]) -> None:
         [
             "File",
             "Original GPOS Size",
+            "Original WOFF2 Size",
             "mode=one",
             "Change one",
+            "mode=one WOFF2 Size",
+            "Change one WOFF2 Size",
             "mode=auto",
             "Change auto",
+            "mode=auto WOFF2 Size",
+            "Change auto WOFF2 Size",
             "mode=max",
             "Change max",
+            "mode=max WOFF2 Size",
+            "Change max WOFF2 Size",
         ]
     )
     for row in rows:
@@ -89,7 +113,7 @@ def write_csv(rows: List[Tuple[Any]]) -> None:
 
 
 def pct(new: float, old: float) -> float:
-    return -100 * (1 - (new / old))
+    return -(1 - (new / old))
 
 
 if __name__ == "__main__":

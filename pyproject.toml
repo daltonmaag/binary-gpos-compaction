@@ -6,7 +6,7 @@ authors = ["Nikolaus Waxweiler <nikolaus.waxweiler@daltonmaag.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-fonttools = "^4.24.3"
+fonttools = {version = "^4.24.3", extras = ["woff"]}
 sklearn = "^0.0"
 ufo2ft = "^2.21.0"
 
